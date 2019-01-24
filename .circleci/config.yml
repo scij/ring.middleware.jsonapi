@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/ring.middleware.jsonapi
+    docker:
+      - image: circleci/clojure:lein-2.8.1
+    environment:
+      LEIN_ROOT: nbd
+      LC_ALL: C
+    steps:
+      - checkout
+      - restore_cache:
+          key: ring.middleware.jsonapi-{{ checksum "project.clj" }}
+      - run: lein deps
+      - save_cache:
+          paths:
+            - ~/.m2
+            - ~/.lein
+          key: ring.middleware.jsonapi-{{ checksum "project.clj" }}
+      - run: lein test
+      - run: lein cloverage
+      - run: lein kibit
