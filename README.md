@@ -12,7 +12,7 @@ Leiningen/Boot
 --------------
 
 ```clojure
-[ring.middleware.jsonapi "0.1.0"]
+[ring.middleware.jsonapi "0.1.1"]
 ```
 
 

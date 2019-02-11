@@ -1,4 +1,4 @@
-(defproject ring.middleware.jsonapi "0.1.0"
+(defproject ring.middleware.jsonapi "0.1.1"
   :description "A simple Ring's middleware that generates JSON API response"
   :url "https://github.com/druids/ring.middleware.jsonapi"
   :license {:name "MIT License"
