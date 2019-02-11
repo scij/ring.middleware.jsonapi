@@ -32,7 +32,7 @@
               (partial reduce
                  (fn [acc object]
                    (update acc :data conj (->attribute-object resource-name id-key object)))
-                 nil)
+                 {:data []})
               #(hash-map :data (->attribute-object resource-name id-key %))))))
 
 (defn decorate-response
