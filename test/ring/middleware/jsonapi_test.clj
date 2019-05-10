@@ -10,27 +10,27 @@
            (let [handler (m-jsonapi/wrap-response (constantly response))]
              (handler {:headers {"accept" "application/vnd.api+json"}})))
       {:status 200
-       :body {:data [{:id "1", :attributes {:name "foo"}, :type "bars"}]
+       :body {:data [{:id "1", :attributes {:name "foo", :id 1}, :type "bars"}]
               :jsonapi {:version "1.0"}}}
       {:status 200
-       :body [{:id "1", :name "foo"}]
+       :body [{:id 1, :name "foo"}]
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"}
 
       {:status 200
-       :body {:data {:id "1", :attributes {:name "foo"}, :type "bars"},
+       :body {:data {:id "1", :attributes {:name "foo", :id 1}, :type "bars"},
               :jsonapi {:version "1.0"}}}
       {:status 200
-       :body {:id "1", :name "foo"}
+       :body {:id 1, :name "foo"}
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"}
 
       {:status 200
-       :body {:data [{:id "1", :attributes {:name "foo"}, :type "bars"}]
+       :body {:data [{:id "1", :attributes {:name "foo", :id 1}, :type "bars"}]
               :jsonapi {:version "1.0"}
               :meta {:total 1}}}
       {:status 200
-       :body [{:id "1", :name "foo"}]
+       :body [{:id 1, :name "foo"}]
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"
        ::jsonapi/meta {:total 1}}))
@@ -41,11 +41,11 @@
                      :data
                      {:id "1"
                       :type "bars"
-                      :attributes {:name "foo"}
+                      :attributes {:name "foo", :id 1}
                       :links {:self "http://foo"}}}}
              (let [handler (m-jsonapi/wrap-response
                             (constantly {:status 201
-                                         :body {:id "1"
+                                         :body {:id 1
                                                 :name "foo"
                                                 ::jsonapi/links {:self "http://foo"}}
                                          ::jsonapi/id-key :id
@@ -54,18 +54,18 @@
 
   (t/testing "should not decorate response, error response code"
     (t/is (= {:status 400
-              :body {:id "1", :name "foo"}}
+              :body {:id 1, :name "foo"}}
              (let [handler (m-jsonapi/wrap-response
                             (constantly {:status 400
-                                         :body {:id "1", :name "foo"}}))]
+                                         :body {:id 1, :name "foo"}}))]
               (handler {:headers {"accept" "application/vnd.api+json"}})))))
 
   (t/testing "should not decorate response, no accept header"
     (t/is (= {:status 200
-              :body {:id "1", :name "foo"}}
+              :body {:id 1, :name "foo"}}
             (let [handler (m-jsonapi/wrap-response
                             (constantly {:status 200
-                                         :body {:id "1", :name "foo"}}))]
+                                         :body {:id 1, :name "foo"}}))]
               (handler {})))))
 
   (t/testing "should not decorate response, accept header doesn't match"
