@@ -1,3 +1,9 @@
+## 0.2.0
+
+#### Changes
+
+ - Fix #6 ID and type should not be removed from Attributes object
+
 ## 0.1.1
 
 #### Fixes
