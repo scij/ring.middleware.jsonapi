@@ -12,7 +12,7 @@
 
 (defn ->attribute-object
   [resource-name id-key object]
-  (merge {:attributes (dissoc object :id :type ::links ::meta)}
+  (merge {:attributes (dissoc object ::links ::meta)}
          (when (some? id-key) {:id (id->str (get object id-key))})
          {:type resource-name}
          (reduce (fn [acc [k ns-k]]
@@ -62,10 +62,8 @@
   ([resource-name object id-key]
    {:data (->attribute-object resource-name id-key object)}))
 
-(defn- strip-object
-  [object]
-  (merge (:attributes object)
-         (select-keys object [:id])))
+(def ^:private strip-object
+  :attributes)
 
 (defn strip-body
   [{:keys [data] :as body}]
