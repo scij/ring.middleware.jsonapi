@@ -4,7 +4,7 @@
   :license {:name "MIT License"
             :url "http://opensource.org/licenses/MIT"}
 
-  :dependencies [[metosin/muuntaja "0.6.3"]]
+  :dependencies [[metosin/muuntaja "0.6.8"]]
 
   :cloverage
   {:fail-threshold 90}
@@ -14,4 +14,4 @@
                              [lein-kibit "0.1.6"]
                              [jonase/eastwood "0.2.5"]]
 
-                   :dependencies [[org.clojure/clojure "1.10.0"]]}})
+                   :dependencies [[org.clojure/clojure "1.10.3"]]}})
