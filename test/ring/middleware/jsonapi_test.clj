@@ -10,6 +10,7 @@
          (let [handler (m-jsonapi/wrap-response (constantly response))]
            (handler {:headers {"accept" "application/vnd.api+json"}})))
       {:status 200
+       :headers {"Content-Type" "application/vnd.api+json"}
        :body   {:data    [{:id "1", :attributes {:name "foo", :id 1}, :type "bars"}]
                 :jsonapi {:version "1.0"}}}
       {:status                 200
@@ -18,6 +19,7 @@
        ::jsonapi/resource-name "bars"}
 
       {:status 200
+       :headers {"Content-Type" "application/vnd.api+json"}
        :body   {:data    {:id "1", :attributes {:name "foo", :id 1}, :type "bars"},
                 :jsonapi {:version "1.0"}}}
       {:status                 200
@@ -26,6 +28,7 @@
        ::jsonapi/resource-name "bars"}
 
       {:status 200
+       :headers {"Content-Type" "application/vnd.api+json"}
        :body   {:data    [{:id "1", :attributes {:name "foo", :id 1}, :type "bars"}]
                 :jsonapi {:version "1.0"}
                 :meta    {:total 1}}}
@@ -36,6 +39,7 @@
        ::jsonapi/meta          {:total 1}}
 
       {:status 200
+       :headers {"Content-Type" "application/vnd.api+json"}
        :body   {:data    [{:id "1" :attributes {:name "foo", :id 1}, :type "bars"}
                           {:id "2" :attributes {:name "bar", :id 2}, :type "bars"}]
                 :jsonapi {:version "1.0"}
@@ -45,11 +49,11 @@
        ::jsonapi/id-key        :id
        ::jsonapi/resource-name "bars"
        ::jsonapi/meta          {:total 2}}
-
       ))
 
   (t/testing "should decorate response with a links object"
     (t/is (= {:status 201
+              :headers {"Content-Type" "application/vnd.api+json"}
               :body   {:jsonapi {:version "1.0"}
                        :data
                                 {:id         "1"

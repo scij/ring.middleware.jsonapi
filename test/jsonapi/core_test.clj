@@ -5,12 +5,14 @@
 (t/deftest decorate-response-test
   (t/testing "should work with custom options"
     (t/are [expected response opts] (= expected (jsonapi/decorate-response response opts))
-      {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}, :jsonapi {:version "1.0"}}}
+      {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}, :jsonapi {:version "1.0"}}
+       :headers {"Content-Type" "application/vnd.api+json"}}
       {:body {:name "foo", :id 1}, ::jsonapi/id-key :id, ::jsonapi/resource-name "bars"}
       {}
 
       {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}
-              :meta {:foo "bar"}, :jsonapi {:version "1.0"}}}
+              :meta {:foo "bar"}, :jsonapi {:version "1.0"}}
+       :headers {"Content-Type" "application/vnd.api+json"}}
       {:body {:name "foo", :id 1}
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"
@@ -18,7 +20,8 @@
       {}
 
       {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}
-              :meta {:foo "bar"}, :jsonapi {:version "1.0"}}}
+              :meta {:foo "bar"}, :jsonapi {:version "1.0"}}
+       :headers {"Content-Type" "application/vnd.api+json"}}
       {:body {:name "foo", :id 1}
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"
@@ -27,7 +30,8 @@
 
   (t/testing "should work with default options"
     (t/is (= {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}
-                     :jsonapi {:version "1.0"}}}
+                     :jsonapi {:version "1.0"}}
+              :headers {"Content-Type" "application/vnd.api+json"}}
              (jsonapi/decorate-response
               {:body {:name "foo", :id 1}, ::jsonapi/id-key :id, ::jsonapi/resource-name "bars"})))))
 

@@ -12,13 +12,14 @@ Leiningen/Boot
 --------------
 
 ```clojure
-[ring.middleware.jsonapi "0.2.0"]
+[ring.middleware.jsonapi "0.3.0"]
 ```
 
 
 Documentation
 -------------
 
+Forked from earlier work at https://github.com/druids/ring.middleware.jsonapi.
 
 Contribution
 ------------

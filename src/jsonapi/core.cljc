@@ -35,6 +35,10 @@
                  {:data []})
               #(hash-map :data (->attribute-object resource-name id-key %))))))
 
+(defn- decorate-header [response]
+  (assoc-in response [:headers "Content-Type"] "application/vnd.api+json")
+  )
+
 (defn decorate-response
   "Decorates a Ring response as JSON API response. It expects following keys
   in the given response:
@@ -49,6 +53,7 @@
   ([response {:keys [jsonapi]
               :or {jsonapi {:version "1.0"}}}]
    (-> response
+       decorate-header
        decorate-body
        (dissoc ::resource-name ::id-key ::meta ::links)
        (update :body merge {:jsonapi jsonapi} (when (-> response ::meta some?)
