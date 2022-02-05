@@ -26,7 +26,17 @@
        ::jsonapi/id-key :id
        ::jsonapi/resource-name "bars"
        ::jsonapi/meta {:foo "bar"}}
-      {}))
+      {}
+
+      {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}, :jsonapi {:version "1.0"}
+                     :relationships {:baz {:links {:self "/bars/1/relationships/baz", :related "bars/1/baz"}}}}
+       :headers {"Content-Type" "application/vnd.api+json"}}
+      {:body {:name "foo", :id 1}
+       ::jsonapi/id-key :id
+       ::jsonapi/resource-name "bars"
+       ::jsonapi/relationships {:baz {:links {:self "/bars/1/relationships/baz", :related "bars/1/baz"}}}}
+      {}
+     ))
 
   (t/testing "should work with default options"
     (t/is (= {:body {:data {:attributes {:name "foo", :id 1}, :id "1", :type "bars"}

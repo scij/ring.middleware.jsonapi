@@ -46,6 +46,8 @@
   https://jsonapi.org/format/#document-resource-object-identification
   - `:jsonapi.core/meta` an optional meta object https://jsonapi.org/format/#document-meta
   - `:jsonapi.core/links` a links object https://jsonapi.org/format/#document-links
+  - `:jsonapi.core/relationships` an optional relationships object
+  https://jsonapi.org/format/#document-resource-object-relationships
 
   Options:
   - `:jsonapi` - an object that will be appended to a root of a body

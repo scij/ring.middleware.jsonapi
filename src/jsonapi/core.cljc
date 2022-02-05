@@ -12,7 +12,7 @@
 
 (defn ->attribute-object
   [resource-name id-key object]
-  (merge {:attributes (dissoc object ::links ::meta)}
+  (merge {:attributes (dissoc object ::links ::meta ::relationships)}
          (when (some? id-key) {:id (id->str (get object id-key))})
          {:type resource-name}
          (reduce (fn [acc [k ns-k]]
@@ -20,7 +20,7 @@
                      (assoc acc k (get object ns-k))
                      acc))
                  {}
-                 [[:links ::links] [:meta ::meta]])))
+                 [[:links ::links] [:meta ::meta] [:relationships ::relationships]])))
 
 (defn- decorate-body
   [{:keys [body] :as response}]
@@ -30,9 +30,9 @@
             :body
             (if (sequential? body)
               (partial reduce
-                 (fn [acc object]
-                   (update acc :data conj (->attribute-object resource-name id-key object)))
-                 {:data []})
+                       (fn [acc object]
+                         (update acc :data conj (->attribute-object resource-name id-key object)))
+                       {:data []})
               #(hash-map :data (->attribute-object resource-name id-key %))))))
 
 (defn- decorate-header [response]
@@ -47,17 +47,22 @@
   - `:jsonapi.core/id-key` defines a key name for an `id` attribute of an response
   https://jsonapi.org/format/#document-resource-object-identification
   - `:jsonapi.core/meta` an optional meta object https://jsonapi.org/format/#document-meta
-  - `:jsonapi.core/links` a links object https://jsonapi.org/format/#document-links"
+  - `:jsonapi.core/links` a links object https://jsonapi.org/format/#document-links
+  - ':jsonapi.core/relationships` an optional relationships object
+  https://jsonapi.org/format/#document-resource-object-relationships"
   ([response]
    (decorate-response response {}))
   ([response {:keys [jsonapi]
-              :or {jsonapi {:version "1.0"}}}]
+              :or   {jsonapi {:version "1.0"}}}]
    (-> response
        decorate-header
        decorate-body
-       (dissoc ::resource-name ::id-key ::meta ::links)
-       (update :body merge {:jsonapi jsonapi} (when (-> response ::meta some?)
-                                                {:meta (::meta response)})))))
+       (dissoc ::resource-name ::id-key ::meta ::links ::relationships)
+       (update :body merge {:jsonapi jsonapi}
+               (when (-> response ::meta some?)
+                 {:meta (::meta response)})
+               (when (-> response ::relationships some?)
+                 {:relationships (::relationships response)})))))
 
 (defn decorate-request
   "Decorates a given `object` as a JSON API request. Adds an attributes objects and `id`

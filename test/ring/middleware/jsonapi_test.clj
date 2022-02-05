@@ -69,6 +69,25 @@
                                           ::jsonapi/resource-name "bars"}))]
                (handler {:headers {"accept" "application/vnd.api+json"}})))))
 
+  (t/testing "should decorate response with a relationships object"
+    (t/is (= {:status 200
+              :headers {"Content-Type" "application/vnd.api+json"}
+              :body {:jsonapi {:version "1.0"}
+                     :data
+                              {:id            "1"
+                               :type          "bars"
+                               :attributes    {:name "foo", :id 1}
+                               :relationships {:self "/bars/1/relationships/baz" :related "/bars/1/baz"}}}}
+             (let [handler (m-jsonapi/wrap-response
+                             (constantly {:status 200
+                                          :body {:id 1
+                                                 :name "foo"
+                                                 ::jsonapi/relationships {:self "/bars/1/relationships/baz"
+                                                                          :related "/bars/1/baz"}}
+                                          ::jsonapi/id-key :id
+                                          ::jsonapi/resource-name "bars"}))]
+               (handler {:headers {"accept" "application/vnd.api+json"}})))))
+
   (t/testing "should not decorate response, error response code"
     (t/is (= {:status 400
               :body   {:id 1, :name "foo"}}
